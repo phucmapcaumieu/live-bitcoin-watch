@@ -71,46 +71,6 @@ def getLogo(coin):
         retLink = link.attrs['href']
     
     return retLink
-    
-
-def parse(soup):
-    time_stamp = datetime.now()
-    time_stamp = time_stamp.strftime("%Y-%m-%d %H:%M:%S")
-    
-    data = soup.find('main')
-
-    # Trending coin
-    list = []
-    trending = data.find('tbody').find_all('tr')
-    for coin in trending:
-        
-        rank = coin.find('small', class_='abr pt-1').text
-        logoLink = getLogo(coin)
-        sym = coin.find('div', class_="filter-item-name mb0 text-left").text
-        name = coin.find('small', class_="abr text-truncate").text
-        main_price = coin.find('td', class_= "filter-item table-item main-price").text
-        MarketCap = coin.find('td', class_= "filter-item table-item price").text
-        VolumePrice = coin.find('td', class_= "filter-item table-item volume price").text
-        
-
-        sym = sym[0:3]
-            
-        mainVal = chuanHoa(main_price)
-        MarketCapVal = chuanHoa(MarketCap)
-        VolmeValue = chuanHoa(VolumePrice)
-
-        product = { 'Time':time_stamp,
-                    'Rank' : rank,
-                    'Symbol': sym,
-                    'Name': name,
-                    'Price': mainVal,
-                    'Marketcap' : MarketCapVal,
-                    'Volume 24h' : VolmeValue,
-                    'Logo' : logoLink
-                    }
-        print(product)
-        list.append(product)
-
 
 
 def output(product):
@@ -128,11 +88,12 @@ def output(product):
     return
 
 def main():
-    # while True: 
+    while True: 
         data = request('https://www.livecoinwatch.com/trending')
         product = parse(data)
-        # output(product)
-        # sleep(4) 
+        output(product)
+        sleep(4) 
 
-main()
+if __name__ == '__main__':
+    main()
 
